@@ -22,7 +22,7 @@ jobs:
       - run: rm -rf ~/miniconda3/miniconda.sh
       - run: ~/miniconda3/bin/conda init bash
       - run: conda install -n base -c conda-forge mamba
-      - run: source activate base
+      - run: ~/miniconda3/bin/source activate base
       - run: mamba create -c conda-forge -c bioconda -n snakemake snakemake
       - run: source activate base
       - run: conda activate snakemake
