@@ -1,8 +1,8 @@
-name: GitHub Actions Demo
+name: Update Pipeline
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Update-Pipeline:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -16,6 +16,14 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: pwd
-
-
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - run: mkdir -p ~/miniconda3
+      - run: wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+      - run: bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+      - run: rm -rf ~/miniconda3/miniconda.sh
+      - run: ~/miniconda3/bin/conda init bash
+      - run: conda install -n base -c conda-forge mamba
+      - run: conda activate base
+      - run: mamba create -c conda-forge -c bioconda -n snakemake snakemake
+      - run: conda activate snakemake
+      - run: snakemake --cores 1 -s Snakefile
+      - run: echo "This job's status is ${{ job.status }}."
